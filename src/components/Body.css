@@ -1,8 +1,8 @@
 .banner {
-    background-image: url('https://exprostudio.com/html/book_library/images/slider/img-01.jpg'); /* Replace with your image URL */
+    background-image: url('https://static.vecteezy.com/system/resources/previews/027/100/981/non_2x/an-orange-book-or-notebook-with-lavender-flowers-inside-is-featured-on-a-green-background-with-free-photo.jpg'); /* Replace with your image URL */
     background-size: cover;
-    background-position: center;
-    height: 500px;
+    background-position: bottom;
+    height: 630px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,11 +25,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-   
     margin-bottom: 1rem;
-    font-size: 1.525rem;
-    font-weight: 400;
-    color: #bf9444;
+    font-size: 1.925rem;
+    font-weight: 600;
+    color: #f39c12;
     line-height: 1.625rem;
     font-family: var(--font-Jost);
     display: inline-block;
@@ -40,9 +39,9 @@
   }
   
   .banner-title {
-    font-size: 3rem;
+    font-size: 4.3rem;
     font-weight: 700;
-    color: #222;
+    color: #fff;
     font-family: var(--font-cormorant);
     line-height: 1.1;
     margin-bottom: 35px;
@@ -50,7 +49,7 @@
   
   .banner-description {
     font-size: 1.25rem;
-    color: #585858;
+    color: #fff;
     margin-bottom: 2rem;
   }
   
@@ -78,8 +77,8 @@
     -ms-flex-pack: center;
     text-align: center;
     border: none;
-    color: #f39c12;
-    background-color: transparent;
+    color: #ffff;
+    background-color: #f39c12;
     border: 2px solid #f39c12;
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
@@ -90,7 +89,8 @@
   }
   
   .primary-btn2:hover {
-    background-color: #f39c12;
-    color: #222;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #f7b449;
+    border: 2px solid #f39c12;
   }
   

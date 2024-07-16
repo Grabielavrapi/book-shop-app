@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { NavLink, Form, useLoaderData } from 'react-router-dom';
+import { NavLink, Form, useLoaderData, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
@@ -22,6 +22,7 @@ const settings = ['Cart'];
 
 function ResponsiveAppBar() {
   const { token } = useLoaderData() as { token: string };
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -39,6 +40,13 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Simulate removing token or session data
+    localStorage.removeItem('token');
+    navigate('/signin');
   };
 
   return (
@@ -174,7 +182,7 @@ function ResponsiveAppBar() {
                 </MenuItem>
               ))}
               {token && (
-                <Form action='/logout' method='post'>
+                <Form action='/logout' method='post' onSubmit={handleLogout}>
                   <MenuItem>
                     <Button type='submit' sx={{ color: '#484848' }}>
                       Logout
