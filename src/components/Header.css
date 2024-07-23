@@ -1,40 +1,43 @@
 .header {
     background-color: #343a40;
     padding: 10px 0;
-  }
-  
-  .header .container {
+}
+
+.header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .logo {
+}
+
+.logo {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
-  }
-  
-  .nav-pills .nav-link {
+}
+
+.nav-pills .nav-link {
     color: rgba(255, 255, 255, 0.75);
     transition: color 0.3s;
-  }
-  
-  .nav-pills .nav-link:hover,
-  .nav-pills .nav-link.active {
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link.active {
     color: white;
-  }
-  
-  .nav-pills .nav-item {
+}
+
+.nav-pills .nav-item {
     margin-left: 10px;
-  }
-  
-  .btn-link {
+}
+
+.btn-link {
     color: rgba(255, 255, 255, 0.75);
     cursor: pointer;
-  }
-  
-  .btn-link:hover {
+}
+
+.btn-link:hover {
     color: white;
-  }
-  
+}
+
+.loggo {
+    width: 60px !important;
+}

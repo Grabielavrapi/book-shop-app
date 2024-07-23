@@ -1,47 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import Landing from './pages/Landing';
-import NotFound from './components/NotFound';
-import SignIn from './components/SignIn';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import Landing from "./pages/Landing";
+import NotFound from "./components/NotFound";
+import SignIn from "./components/SignIn";
+import ProtectedRoute from "./components/ProtectedRoute";
+import "./index.css";
 
-const getToken = async () => {
-  return await new Promise((resolve) => setTimeout(() => resolve('dummy-token'), 1000));
+const isAuthenticated = () => {
+  return localStorage.getItem("token") !== null;
+};
+
+const getUserRole = () => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  return user.role;
+};
+
+const loader = () => {
+  if (!isAuthenticated()) {
+    return redirect("/");
+  }
+  const role = getUserRole();
+  return { token: localStorage.getItem("token"), role };
 };
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Landing />,
-    loader: async () => {
-      const token = await getToken();
-      if (!token) {
-        throw new Response('', { status: 401, statusText: 'Unauthorized' });
-      }
-      return { token };
-    },
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: 'logout',
-        element: <SignIn />,
-      },
-    ],
-  },
-  {
-    path: '/signin',
+    path: "/",
     element: <SignIn />,
   },
   {
-    path: '*',
+    path: "/landing",
+    element: (
+      <ProtectedRoute allowedRoles={["user", "admin"]}>
+        <Landing />
+      </ProtectedRoute>
+    ),
+    loader,
+  },
+  {
+    path: "*",
     element: <NotFound />,
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

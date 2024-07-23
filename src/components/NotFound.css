@@ -1,4 +1,4 @@
-/* colors */
+
 :root {
   --blue: #293b49;
   --pink: #fdabaf;
@@ -141,15 +141,19 @@ a {
   0% {
     height: 0.8rem;
   }
+
   50% {
     height: 0.8rem;
   }
+
   52% {
     height: 0.1rem;
   }
+
   54% {
     height: 0.8rem;
   }
+
   100% {
     height: 0.8rem;
   }

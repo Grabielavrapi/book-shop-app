@@ -2,8 +2,9 @@ import React from "react";
 import "./Footer.css";
 
 const Footer = () => {
-  return (
-    <footer className="footer">
+    return (
+        <footer className="footer" style={{ backgroundColor: 'rgb(237, 231, 246)' }}>
+            <div className="container">
       <div className="container">
          {/* <div className="row pt--40 pb--40">
           <div className="col-md-4 mb-sm--30">
@@ -43,10 +44,11 @@ const Footer = () => {
       
         <div className="col-12 text-center footer-logo">
           <img
-            src="./src/assets/img/Screenshot_2024-07-15_003600.png"
+            src="./src/assets/img/logo_header.webp"
             className="logo"
             alt="logo"
           ></img>
+        </div>
         </div>
       </div>
       <p>&copy; 2024 Book Shop App | All Rights Reserved.</p>
