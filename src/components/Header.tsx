@@ -29,6 +29,7 @@ import { RootState } from "../store/store";
 import { addToCart, removeFromCart } from "../store/cartSlice";
 import { BookData } from "./tableUtils"; // Ensure this import
 import "./Header.css";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface HeaderProps {
   filterValue: string;
@@ -325,11 +326,22 @@ function ResponsiveAppBar({
             transform: "translate(-50%, -50%)",
             width: 400,
             bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
+            boxShadow:"0 4px 20px 0 rgba(102, 49, 255, .15)",
             p: 4,
           }}
         >
+          <IconButton
+            aria-label="close"
+            onClick={() => setCartOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Shopping Cart
           </Typography>
@@ -372,99 +384,145 @@ function ResponsiveAppBar({
         </Box>
       </Modal>
       <Modal
-        open={wishlistOpen} 
-        onClose={() => setWishlistOpen(false)}
-        aria-labelledby="wishlist-modal-title"
-        aria-describedby="wishlist-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="wishlist-modal-title" variant="h6" component="h2">
-            Wishlist
+  open={wishlistOpen}
+  onClose={() => setWishlistOpen(false)}
+  aria-labelledby="wishlist-modal-title"
+  aria-describedby="wishlist-modal-description"
+>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "background.paper",
+      boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
+      p: 4,
+      background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+      borderColor: "#b1bacb",
+      borderRadius: "10px",
+    }}
+  >
+    <IconButton
+      aria-label="close"
+      onClick={() => setWishlistOpen(false)}
+      sx={{
+        position: "absolute",
+        right: 8,
+        top: 8,
+        color: (theme) => theme.palette.grey[500],
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+    <Typography id="wishlist-modal-title" variant="h6" component="h2" sx={{ fontSize: 20, fontWeight: 600, color: "rgb(30, 58, 138)" }}>
+      Wishlist
+    </Typography>
+    {wishlist.length === 0 ? (
+      <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
+        No items in the wishlist.
+      </Typography>
+    ) : (
+      wishlist.map((book) => (
+        <Box key={book.id} sx={{ mt: 2 }}>
+          <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
+            <strong>{book.title}</strong> by {book.author}
           </Typography>
-          {wishlist.length === 0 ? (
-            <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
-              No items in the wishlist.
-            </Typography>
-          ) : (
-            wishlist.map((book) => (
-              <Box key={book.id} sx={{ mt: 2 }}>
-                <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
-                  <strong>{book.title}</strong> by {book.author}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => handleRemoveFromWishlist(book.id)}
-                >
-                  Remove
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleAddToCart(book)}
-                >
-                  Add to Cart
-                </Button>
-              </Box>
-            ))
-          )}
-        </Box>
-      </Modal>
-      <Modal
-        open={checkoutOpen}
-        onClose={() => setCheckoutOpen(false)}
-        aria-labelledby="checkout-modal-title"
-        aria-describedby="checkout-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="checkout-modal-title" variant="h6" component="h2">
-            Checkout
-          </Typography>
-          <TextField
-            label="Card Number"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            label="Expiry Date"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField label="CVV" fullWidth margin="normal" variant="outlined" />
-          <Typography id="checkout-modal-description" sx={{ mt: 2 }}>
-            <strong>Total Amount:</strong> ${totalAmount.toFixed(2)}
-          </Typography>
-          <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-            Pay Now
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleRemoveFromWishlist(book.id)}
+            sx={{ mr: 1 }}
+          >
+            Remove
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleAddToCart(book)}
+          >
+            Add to Cart
           </Button>
         </Box>
-      </Modal>
+      ))
+    )}
+  </Box>
+</Modal>
+      <Modal
+  open={cartOpen}
+  onClose={() => setCartOpen(false)}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "background.paper",
+      boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
+      p: 4,
+      background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+      borderColor: "#b1bacb",
+      borderRadius: "10px",
+    }}
+  >
+    <IconButton
+      aria-label="close"
+      onClick={() => setCartOpen(false)}
+      sx={{
+        position: "absolute",
+        right: 8,
+        top: 8,
+        color: (theme) => theme.palette.grey[500],
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontSize: 20, fontWeight: 600, color: "rgb(30, 58, 138)" }}>
+      Shopping Cart
+    </Typography>
+    {cartItems.length === 0 ? (
+      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        No items in the cart.
+      </Typography>
+    ) : (
+      <>
+        {cartItems.map((item) => (
+          <Box key={item.id} sx={{ mt: 2 }}>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              <strong>{item.title}</strong> by {item.author}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              Quantity: {item.quantity}
+            </Typography>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleRemoveFromCart(item.id)}
+            >
+              Remove
+            </Button>
+          </Box>
+        ))}
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Total Amount:</strong> ${totalAmount.toFixed(2)}
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCheckout}
+          sx={{ mt: 2 }}
+        >
+          Checkout
+        </Button>
+      </>
+    )}
+  </Box>
+</Modal>
     </ThemeProvider>
   );
 }

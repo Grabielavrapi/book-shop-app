@@ -41,3 +41,46 @@
 .loggo {
     width: 60px !important;
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .logo {
+        font-size: 1.25rem;
+    }
+    
+    .nav-pills .nav-item {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
+    .nav-pills .nav-link {
+        font-size: 1rem;
+    }
+    
+    .btn-link {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .nav-pills .nav-link {
+        font-size: 0.875rem;
+    }
+    
+    .btn-link {
+        font-size: 0.875rem;
+    }
+    
+    .loggo {
+        width: 50px !important;
+    }
+}

@@ -3,7 +3,7 @@ import "./Footer.css";
 
 const Footer = () => {
     return (
-        <footer className="footer" style={{ backgroundColor: 'rgb(237, 231, 246)' }}>
+        <footer className="footer" style={{ background: 'linear-gradient(180deg,#eff6ff 0.55%,#dce0fc 98%)' }}>
             <div className="container">
       <div className="container">
          {/* <div className="row pt--40 pb--40">

@@ -32,6 +32,7 @@ import useTable from "./useTable";
 import { BookData, createBookData, Order } from "./tableUtils";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import CloseIcon from '@mui/icons-material/Close';
 
 const initialRows: BookData[] = [
   createBookData(1, "Think and Grow Rich", "Napoleon Hill", 1937, "Self-help"),
@@ -373,17 +374,19 @@ export default function EnhancedTable({
     toast.success(`${book.title} added to cart!`);
   };
 
-  const handleAddToWishlist = (book: BookData) => {
-    setWishlist((prevWishlist) => [...prevWishlist, book]);
-    toast.success(`${book.title} added to wishlist!`);
+  const handleToggleWishlist = (book: BookData) => {
+    setWishlist((prevWishlist) => {
+      if (prevWishlist.some((item) => item.id === book.id)) {
+        return prevWishlist.filter((item) => item.id !== book.id);
+      } else {
+        return [...prevWishlist, book];
+      }
+    });
   };
 
-  const handleRemoveFromWishlist = (id: number) => {
-    setWishlist((prevWishlist) =>
-      prevWishlist.filter((book) => book.id !== id)
-    );
-    toast.success(`Book removed from wishlist!`);
-  };
+  function handleRemoveFromWishlist(id: number): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -464,8 +467,8 @@ export default function EnhancedTable({
                           <AddIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Add to Wishlist">
-                        <IconButton onClick={() => handleAddToWishlist(row)}>
+                      <Tooltip title="Toggle Wishlist">
+                        <IconButton onClick={() => handleToggleWishlist(row)}>
                           <FavoriteIcon
                             color={isWishlisted ? "secondary" : "inherit"}
                           />
@@ -497,107 +500,150 @@ export default function EnhancedTable({
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
-      <Modal
-        open={modalOpen}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Book Details
+     <Modal
+  open={modalOpen}
+  onClose={handleCloseModal}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "background.paper",
+      boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
+      p: 4,
+      background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+      borderColor: "#b1bacb",
+      borderRadius: "10px",
+   
+    }}
+  >
+    <IconButton
+      aria-label="close"
+      onClick={handleCloseModal}
+      sx={{
+        position: "absolute",
+        right: 8,
+        top: 8,
+        color: (theme) => theme.palette.grey[500],
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+    <Typography
+      id="modal-modal-title"
+      variant="h6"
+      component="h2"
+      sx={{
+        fontSize: 20,
+        fontWeight: 600,
+        color: "rgb(30, 58, 138)",
+      }}
+    >
+      Book Details
+    </Typography>
+    {selectedBook && (
+      <>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Title:</strong> {selectedBook.title}
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Author:</strong> {selectedBook.author}
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Year:</strong> {selectedBook.year}
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Genre:</strong> {selectedBook.genre}
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Description:</strong> Detailed description about the book.
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Price:</strong> $19.99
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <strong>Reviews:</strong> 4.5/5 (200 reviews)
+        </Typography>
+      </>
+    )}
+  </Box>
+</Modal>
+<Modal
+  open={wishlistModalOpen}
+  onClose={() => setWishlistModalOpen(false)}
+  aria-labelledby="wishlist-modal-title"
+  aria-describedby="wishlist-modal-description"
+>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "background.paper",
+      padding: 32,
+      paddingTop: 60,
+      paddingRight: 100,
+      paddingBottom: 60,
+      paddingLeft: 100,
+      background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+      borderColor: "#b1bacb",
+      borderStyle: "none",
+      borderRadius: 20,
+      boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.08)",
+    }}
+  >
+    <IconButton
+      aria-label="close"
+      onClick={() => setWishlistModalOpen(false)}
+      sx={{
+        position: "absolute",
+        right: 8,
+        top: 8,
+        color: (theme) => theme.palette.grey[500],
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+    <Typography id="wishlist-modal-title" variant="h6" component="h2">
+      Wishlist
+    </Typography>
+    {wishlist.length === 0 ? (
+      <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
+        No items in the wishlist.
+      </Typography>
+    ) : (
+      wishlist.map((book) => (
+        <Box key={book.id} sx={{ mt: 2 }}>
+          <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
+            <strong>{book.title}</strong> by {book.author}
           </Typography>
-          {selectedBook && (
-            <>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Title:</strong> {selectedBook.title}
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Author:</strong> {selectedBook.author}
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Year:</strong> {selectedBook.year}
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Genre:</strong> {selectedBook.genre}
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Description:</strong> Detailed description about the
-                book.
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Price:</strong> $19.99
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <strong>Reviews:</strong> 4.5/5 (200 reviews)
-              </Typography>
-            </>
-          )}
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleRemoveFromWishlist(book.id)}
+            sx={{ mr: 1 }}
+          >
+            Remove
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleAddToCart(book)}
+          >
+            Add to Cart
+          </Button>
         </Box>
-      </Modal>
-      <Modal
-        open={wishlistModalOpen}
-        onClose={() => setWishlistModalOpen(false)}
-        aria-labelledby="wishlist-modal-title"
-        aria-describedby="wishlist-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="wishlist-modal-title" variant="h6" component="h2">
-            Wishlist
-          </Typography>
-          {wishlist.length === 0 ? (
-            <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
-              No items in the wishlist.
-            </Typography>
-          ) : (
-            wishlist.map((book) => (
-              <Box key={book.id} sx={{ mt: 2 }}>
-                <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
-                  <strong>{book.title}</strong> by {book.author}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => handleRemoveFromWishlist(book.id)}
-                >
-                  Remove
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleAddToCart(book)}
-                >
-                  Add to Cart
-                </Button>
-              </Box>
-            ))
-          )}
-        </Box>
-      </Modal>
+      ))
+    )}
+  </Box>
+</Modal>
     </Box>
   );
 }
