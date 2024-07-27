@@ -1,29 +1,33 @@
 import { alpha } from '@mui/material/styles';
 
 export interface BookData {
-    id: number;
-    title: string;
-    author: string;
-    year: number;
-    genre: string;
-    quantity: number; 
-  }
-  
-  export function createBookData(
-    id: number,
-    title: string,
-    author: string,
-    year: number,
-    genre: string
-  ): BookData {
-    return {
-      id,
-      title,
-      author,
-      year,
-      genre,
-      quantity: 0}
-  }
+  coverImage: string; 
+  id: number;
+  title: string;
+  author: string;
+  year: number;
+  genre: string;
+  quantity: number;
+}
+export function createBookData(
+  id: number,
+  title: string,
+  author: string,
+  year: number,
+  genre: string,
+  coverImage: string // Optional parameter
+): BookData {
+  return {
+    id,
+    title,
+    author,
+    year,
+    genre,
+    coverImage,
+    quantity: 0
+  };
+}
+
 export type Order = 'asc' | 'desc';
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
