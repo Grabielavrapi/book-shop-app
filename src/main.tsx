@@ -1,4 +1,6 @@
-import React from "react";
+// src/main.tsx
+
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -12,6 +14,7 @@ import Landing from "./pages/Landing";
 import NotFound from "./components/NotFound";
 import SignIn from "./components/SignIn";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Preloader from "./components/Preloader";  // Import Preloader component
 import "./index.css";
 
 const isAuthenticated = () => {
@@ -51,10 +54,29 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+const App = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return <Preloader />;
+  }
+
+  return (
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
   </React.StrictMode>
 );

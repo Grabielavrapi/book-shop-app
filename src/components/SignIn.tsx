@@ -1,4 +1,4 @@
-import AuthForm from '../components/AuthForm'; // Ensure the path is correct based on your file structure
+import AuthForm from '../components/AuthForm';
 import * as React from 'react';
 import { useNavigate, Route, Routes, Navigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -62,17 +62,26 @@ function Copyright(props: any) {
 export default function SignIn() {
   const [isSignUp, setIsSignUp] = React.useState(false);
   const navigate = useNavigate();
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email') as string;
     const password = data.get('password') as string;
     const role = isSignUp ? (data.get('role') as string) : '';
-  
+
     if (isSignUp) {
       const confirmPassword = data.get('confirmPassword') as string;
       if (password !== confirmPassword) {
         toast.error("Passwords do not match!");
+        return;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        toast.error("Invalid email format");
+        return;
+      }
+      if (password.length < 6) {
+        toast.error("Password must be at least 6 characters");
         return;
       }
       try {
@@ -116,6 +125,7 @@ export default function SignIn() {
       }
     }
   };
+
   const toggleSignUp = () => {
     setIsSignUp((prev) => !prev);
   };
@@ -253,5 +263,3 @@ function App() {
     </Routes>
   );
 }
-
-
