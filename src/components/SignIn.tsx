@@ -1,5 +1,6 @@
+import AuthForm from '../components/AuthForm'; // Ensure the path is correct based on your file structure
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Route, Routes, Navigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const defaultTheme = createTheme({
   palette: {
@@ -56,133 +59,79 @@ function Copyright(props: any) {
   );
 }
 
-function AuthForm({ isSignUp, handleSubmit, toggleSignUp }: { isSignUp: boolean, handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void, toggleSignUp: () => void }) {
-  return (
-    <Box
-      sx={{
-        width: '100%',
-        maxWidth: 400,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        p: 3,
-        backgroundColor: 'rgb(237, 231, 246)',
-        boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
-        borderRadius: 2,
-      }}
-    >
-      <Avatar sx={{ m: 1, bgcolor: '#3f51b5' }}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        {isSignUp ? 'Sign Up' : 'Login'}
-      </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="usernameOrEmail"
-          label="Username or Email"
-          name="usernameOrEmail"
-          autoComplete="username"
-          autoFocus
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-        />
-        {isSignUp && (
-          <>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              id="confirmPassword"
-              autoComplete="current-password"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="role"
-              label="Role (admin or user)"
-              type="text"
-              id="role"
-              autoComplete="role"
-            />
-          </>
-        )}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{
-            mt: 3,
-            mb: 2,
-          }}
-        >
-          {isSignUp ? 'Sign Up' : 'Login'}
-        </Button>
-        <Link href="#" variant="body2" onClick={toggleSignUp} sx={{ display: 'block', textAlign: 'center', mt: 2 }}>
-          {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-        </Link>
-        <Copyright sx={{ mt: 5 }} />
-      </Box>
-    </Box>
-  );
-}
-
-export default function SignInSide() {
+export default function SignIn() {
   const [isSignUp, setIsSignUp] = React.useState(false);
   const navigate = useNavigate();
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const usernameOrEmail = data.get('usernameOrEmail') as string;
+    const email = data.get('email') as string;
     const password = data.get('password') as string;
     const role = isSignUp ? (data.get('role') as string) : '';
-
+  
     if (isSignUp) {
       const confirmPassword = data.get('confirmPassword') as string;
       if (password !== confirmPassword) {
-        alert("Passwords do not match!");
+        toast.error("Passwords do not match!");
         return;
       }
-      localStorage.setItem('user', JSON.stringify({ usernameOrEmail, password, role }));
-      alert("User registered successfully! Please log in.");
-      navigate('/'); // Navigate to login page after successful registration
+      try {
+        const response = await fetch('http://localhost:8080/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password, role }),
+        });
+        if (response.ok) {
+          toast.success("User registered successfully! Please log in.");
+          setIsSignUp(false);
+        } else {
+          const errorData = await response.json();
+          toast.error(errorData.message || "Sign up failed");
+        }
+      } catch (error) {
+        toast.error("Sign up failed. Please try again later.");
+      }
     } else {
-      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      if (storedUser.usernameOrEmail && storedUser.password && storedUser.usernameOrEmail === usernameOrEmail && storedUser.password === password) {
-        localStorage.setItem('token', 'dummy-token'); // Simulating token storage
-        navigate('/landing');
-      } else {
-        alert("Wrong credentials!");
+      try {
+        const response = await fetch('http://localhost:8080/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('role', data.role);
+          navigate('/landing');
+        } else {
+          const errorData = await response.json();
+          toast.error(errorData.message || "Login failed");
+        }
+      } catch (error) {
+        toast.error("Login failed. Please try again later.");
       }
     }
   };
-
   const toggleSignUp = () => {
     setIsSignUp((prev) => !prev);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/books');
+  };
+
+  const isAuthenticated = !!localStorage.getItem('token');
+  const userRole = localStorage.getItem('role');
+
   return (
     <ThemeProvider theme={defaultTheme}>
+      <ToastContainer />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -215,7 +164,94 @@ export default function SignInSide() {
         >
           <AuthForm isSignUp={isSignUp} handleSubmit={handleSubmit} toggleSignUp={toggleSignUp} />
         </Grid>
+        {isAuthenticated && (
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            color="secondary"
+            sx={{ position: 'absolute', top: 16, right: 16 }}
+          >
+            Logout
+          </Button>
+        )}
       </Grid>
     </ThemeProvider>
   );
 }
+
+// Mock Components for the Routes
+function BooksList() {
+  return <div>BooksList Component</div>;
+}
+
+function Cart() {
+  return <div>Cart Component</div>;
+}
+
+function Checkout() {
+  return <div>Checkout Component</div>;
+}
+
+function CreateBook() {
+  return <div>CreateBook Component</div>;
+}
+
+function EditBook() {
+  return <div>EditBook Component</div>;
+}
+
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const isAuthenticated = !!localStorage.getItem('token');
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
+
+function AdminRoute({ children }: { children: JSX.Element }) {
+  const userRole = localStorage.getItem('role');
+  return userRole === 'admin' ? children : <Navigate to="/books" />;
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<SignIn />} />
+      <Route path="/signup" element={<SignIn />} />
+      <Route path="/books" element={<BooksList />} />
+      <Route path="/landing" element={<div>Landing Component</div>} />
+      <Route
+        path="/cart"
+        element={
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/checkout"
+        element={
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/createBook"
+        element={
+          <AdminRoute>
+            <CreateBook />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/editBook/:id"
+        element={
+          <AdminRoute>
+            <EditBook />
+          </AdminRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/books" />} />
+    </Routes>
+  );
+}
+
+

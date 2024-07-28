@@ -12,6 +12,7 @@ html,
 body {
   height: 100%;
   margin: 0;
+  background: linear-gradient(180deg,#eff6ff 0.55%, rgb(237, 231, 246) 98%);
 }
 
 html {
@@ -195,18 +196,29 @@ a {
 }
 
 .button {
-  margin-top: 4rem;
-  padding: 1.2rem 3rem;
-  color: #f39c12;
-  background-color: transparent;
-  border: 2px solid #f39c12;
-  border-radius: 5px;
+  margin: 20px;
+  height: 44px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 200ms linear;
+  padding: 0 30px;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #f7b449;
+  border: 1px solid #f39c12;
   transition: background-color 0.3s, color 0.3s;
+  border-radius: 12px;
+    font-size: 0.875rem;
 }
 
 .button:hover {
+  color: #ffff;
   background-color: #f39c12;
-  color: #222;
+  border: 1px solid #f39c12;
 }
 
 .by {

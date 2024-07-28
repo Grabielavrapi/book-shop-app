@@ -35,8 +35,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import CloseIcon from '@mui/icons-material/Close';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  borderColor: "#120e1f",
-  backgroundColor: "rgb(237, 231, 246)",
+  borderColor: "#CFC3E7",
+  fontSize: "12px",
+  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
 }));
 
 const StyledTableSortLabel = styled(TableSortLabel)(({ theme }) => ({
@@ -47,6 +48,12 @@ const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: "rgb(237, 231, 246)",
   fontWeight: "bold",
   textTransform: "uppercase",
+  fontSize: "12px",
+  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  color: "#362142",
 }));
 
 interface HeadCell {
@@ -160,7 +167,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     author: "",
     year: new Date().getFullYear(),
     genre: "",
-    coverImage: "", // Add this line
+    coverImage: "",
     quantity: 0,
   });
 
@@ -174,7 +181,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         author: "",
         year: new Date().getFullYear(),
         genre: "",
-        coverImage: "", // Add this line
+        coverImage: "",
         quantity: 0,
       });
     }
@@ -198,7 +205,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       author: "",
       year: new Date().getFullYear(),
       genre: "",
-      coverImage: "", // Add this line
+      coverImage: "",
       quantity: 0,
     });
     setEditingBook(null);
@@ -239,9 +246,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={onDelete}>
+          <StyledIconButton onClick={onDelete}>
             <DeleteIcon />
-          </IconButton>
+          </StyledIconButton>
         </Tooltip>
       ) : (
         <>
@@ -285,16 +292,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           <TextField
             label="Cover Image URL"
             name="coverImage"
-            value={book.coverImage} // Add this line
+            value={book.coverImage}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
             sx={{ mx: 1 }}
           />
           <Tooltip title={book.id === 0 ? "Create" : "Update"}>
-            <IconButton onClick={handleCreateOrUpdate}>
+            <StyledIconButton onClick={handleCreateOrUpdate}>
               {book.id === 0 ? <AddIcon /> : <UpdateIcon />}
-            </IconButton>
+            </StyledIconButton>
           </Tooltip>
         </>
       )}
@@ -389,8 +396,14 @@ export default function EnhancedTable({
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+    <Box   
+      sx={{ 
+        width: "100%", 
+          backgroundColor: "#120e1f",
+          backgroundImage:" linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))",
+    color:"white"
+      }} >
+      <Paper sx={{ width: "100%", mb: 2}}>
         <EnhancedTableToolbar
           numSelected={selected.length}
           onDelete={handleDelete}
@@ -400,11 +413,11 @@ export default function EnhancedTable({
         />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 750  }}
             aria-labelledby="tableTitle"
             size={dense ? "small" : "medium"}
           >
-            <EnhancedTableHead
+            <EnhancedTableHead 
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -412,79 +425,79 @@ export default function EnhancedTable({
               onRequestSort={handleRequestSort}
               rowCount={filteredRows.length}
             />
-           <TableBody>
-  {visibleRows.map((row: BookData, index: number) => {
-    const isItemSelected = isSelected(row.id);
-    const labelId = `enhanced-table-checkbox-${index}`;
-    const isWishlisted = wishlist.some((book) => book.id === row.id);
+            <TableBody >
+              {visibleRows.map((row: BookData, index: number) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `enhanced-table-checkbox-${index}`;
+                const isWishlisted = wishlist.some((book) => book.id === row.id);
 
-    return (
-      <TableRow
-        hover
-        onClick={(event: React.MouseEvent<unknown>) => handleClick(event, row.id)}
-        role="checkbox"
-        aria-checked={isItemSelected}
-        tabIndex={-1}
-        key={row.id}
-        selected={isItemSelected}
-        sx={{ cursor: "pointer" }}
-      >
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="secondary"
-            checked={isItemSelected}
-            inputProps={{ "aria-labelledby": labelId }}
-          />
-        </TableCell>
-        <TableCell
-          component="th"
-          id={labelId}
-          scope="row"
-          padding="none"
-          style={{ textAlign: "left" }} // Apply custom style here
-        >
-          {row.coverImage && (
-            <img src={row.coverImage} alt={row.title} style={{ width: 50, height: 50 }} />
-          )}
-        </TableCell>
-        <TableCell align="left">{row.title}</TableCell> {/* Ensure alignment is left */}
-        <TableCell align="left">{row.author}</TableCell> {/* Ensure alignment is left */}
-        <TableCell align="left">{row.year}</TableCell> {/* Ensure alignment is left */}
-        <TableCell align="left">{row.genre}</TableCell> {/* Ensure alignment is left */}
-        <TableCell align="left">
-          <Tooltip title="View Details">
-            <IconButton onClick={() => handleViewDetails(row)}>
-              <InfoIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Update Book">
-            <IconButton onClick={() => setEditingBook(row)}>
-              <UpdateIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Add to Cart">
-            <IconButton onClick={() => handleAddToCart(row)}>
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Toggle Wishlist">
-            <IconButton onClick={() => handleToggleWishlist(row)}>
-              <FavoriteIcon color={isWishlisted ? "secondary" : "inherit"} />
-            </IconButton>
-          </Tooltip>
-        </TableCell>
-      </TableRow>
-    );
-  })}
-  {emptyRows > 0 && (
-    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-      <TableCell colSpan={6} />
-    </TableRow>
-  )}
-</TableBody>
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event: React.MouseEvent<unknown>) => handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="secondary"
+                        checked={isItemSelected}
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </TableCell>
+                    <StyledTableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                      style={{ textAlign: "left" }}
+                    >
+                      {row.coverImage && (
+                        <img src={row.coverImage} alt={row.title} style={{ width: 50, height: 50 }} />
+                      )}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">{row.title}</StyledTableCell>
+                    <StyledTableCell align="left">{row.author}</StyledTableCell>
+                    <StyledTableCell align="left">{row.year}</StyledTableCell>
+                    <StyledTableCell align="left">{row.genre}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Tooltip title="View Details">
+                        <StyledIconButton onClick={() => handleViewDetails(row)}>
+                          <InfoIcon />
+                        </StyledIconButton>
+                      </Tooltip>
+                      <Tooltip title="Update Book">
+                        <StyledIconButton onClick={() => setEditingBook(row)}>
+                          <UpdateIcon />
+                        </StyledIconButton>
+                      </Tooltip>
+                      <Tooltip title="Add to Cart">
+                        <StyledIconButton onClick={() => handleAddToCart(row)}>
+                          <AddIcon />
+                        </StyledIconButton>
+                      </Tooltip>
+                      <Tooltip title="Toggle Wishlist">
+                        <StyledIconButton onClick={() => handleToggleWishlist(row)}>
+                          <FavoriteIcon color={isWishlisted ? "secondary" : "inherit"} />
+                        </StyledIconButton>
+                      </Tooltip>
+                    </StyledTableCell>
+                  </TableRow>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        <TablePagination 
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={filteredRows.length}
@@ -494,10 +507,11 @@ export default function EnhancedTable({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
+      <FormControlLabel 
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
-      />
+      
+       />
       <Modal
         open={modalOpen}
         onClose={handleCloseModal}
