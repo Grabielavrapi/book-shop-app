@@ -27,14 +27,15 @@ import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import { RootState } from "../store/store";
 import { addToCart, removeFromCart } from "../store/cartSlice";
-import { BookData } from "./tableUtils"; // Ensure this import
+import { BookData } from "./tableUtils";
 import "./Header.css";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 
 interface HeaderProps {
   filterValue: string;
   setFilterValue: (value: string) => void;
-  wishlist: BookData[]; 
+  wishlist: BookData[];
   setWishlist: React.Dispatch<React.SetStateAction<BookData[]>>;
 }
 
@@ -44,7 +45,6 @@ function ResponsiveAppBar({
   wishlist,
   setWishlist,
 }: HeaderProps) {
-
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,9 +52,13 @@ function ResponsiveAppBar({
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [cartOpen, setCartOpen] = useState(false);
-  const [wishlistOpen, setWishlistOpen] = useState(false); 
+  const [wishlistOpen, setWishlistOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -106,13 +110,22 @@ function ResponsiveAppBar({
   );
 
   const handleRemoveFromWishlist = (id: number) => {
-    setWishlist((prevWishlist) =>
-      prevWishlist.filter((book) => book.id !== id)
-    );
+    setWishlist((prevWishlist) => prevWishlist.filter((book) => book.id !== id));
   };
 
   const handleAddToCart = (book: BookData) => {
     dispatch(addToCart(book));
+  };
+
+  const handleEmailChange = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/update-email", { email });
+      if (response.status === 200) {
+        setSuccessMessage("Email updated successfully!");
+      }
+    } catch (error) {
+      setErrorMessage("Failed to update email.");
+    }
   };
 
   return (
@@ -143,11 +156,7 @@ function ResponsiveAppBar({
                   textDecoration: "none",
                 }}
               >
-                <img
-                  src="src/assets/img/logoo.png"
-                  className="loggo"
-                  alt="logo"
-                />
+                <img src="src/assets/img/logoo.png" className="loggo" alt="logo" />
               </Typography>
               <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                 <IconButton
@@ -190,12 +199,7 @@ function ResponsiveAppBar({
                   ))}
                 </Menu>
               </Box>
-              <Box
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  alignItems: "center",
-                }}
-              >
+              <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
                 {["Home", "Books"].map((page) => (
                   <NavLink
                     key={page}
@@ -236,13 +240,13 @@ function ResponsiveAppBar({
                 <InputBase
                   placeholder="Search by Title, Author, Keyword, ISBN..."
                   sx={{ ml: 1, flex: 1, color: "#120e1f" }}
-                  value={filterValue}
+                  value={filterValue || ""}
                   onChange={(e) => setFilterValue(e.target.value)}
                 />
               </Box>
             </Box>
 
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.4 }}>
               <IconButton
                 size="large"
                 aria-label="show wishlist"
@@ -286,14 +290,17 @@ function ResponsiveAppBar({
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {["Cart"].map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu();
+                    setEmailModalOpen(true);
+                  }}
+                >
+                  <Typography textAlign="center">User Profile</Typography>
+                </MenuItem>
                 {token && (
                   <MenuItem onClick={handleLogout}>
-                    <Typography textAlign="center">Logout</Typography>
+                    <Typography textAlign="center">LogOut</Typography>
                   </MenuItem>
                 )}
               </Menu>
@@ -312,6 +319,7 @@ function ResponsiveAppBar({
       </AppBar>
       <Toolbar />
       <Box>{/* Page content goes here */}</Box>
+
       <Modal
         open={cartOpen}
         onClose={() => setCartOpen(false)}
@@ -326,8 +334,11 @@ function ResponsiveAppBar({
             transform: "translate(-50%, -50%)",
             width: 400,
             bgcolor: "background.paper",
-            boxShadow:"0 4px 20px 0 rgba(102, 49, 255, .15)",
+            boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
             p: 4,
+            background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+            borderColor: "#b1bacb",
+            borderRadius: "10px",
           }}
         >
           <IconButton
@@ -383,146 +394,145 @@ function ResponsiveAppBar({
           )}
         </Box>
       </Modal>
+
       <Modal
-  open={wishlistOpen}
-  onClose={() => setWishlistOpen(false)}
-  aria-labelledby="wishlist-modal-title"
-  aria-describedby="wishlist-modal-description"
->
-  <Box
-    sx={{
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      width: 400,
-      bgcolor: "background.paper",
-      boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
-      p: 4,
-      background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
-      borderColor: "#b1bacb",
-      borderRadius: "10px",
-    }}
-  >
-    <IconButton
-      aria-label="close"
-      onClick={() => setWishlistOpen(false)}
-      sx={{
-        position: "absolute",
-        right: 8,
-        top: 8,
-        color: (theme) => theme.palette.grey[500],
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
-    <Typography id="wishlist-modal-title" variant="h6" component="h2" sx={{ fontSize: 20, fontWeight: 600, color: "rgb(30, 58, 138)" }}>
-      Wishlist
-    </Typography>
-    {wishlist.length === 0 ? (
-      <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
-        No items in the wishlist.
-      </Typography>
-    ) : (
-      wishlist.map((book) => (
-        <Box key={book.id} sx={{ mt: 2 }}>
-          <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
-            <strong>{book.title}</strong> by {book.author}
-          </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => handleRemoveFromWishlist(book.id)}
-            sx={{ mr: 1 }}
+        open={wishlistOpen}
+        onClose={() => setWishlistOpen(false)}
+        aria-labelledby="wishlist-modal-title"
+        aria-describedby="wishlist-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
+            p: 4,
+            background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+            borderColor: "#b1bacb",
+            borderRadius: "10px",
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={() => setWishlistOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
           >
-            Remove
-          </Button>
+            <CloseIcon />
+          </IconButton>
+          <Typography
+            id="wishlist-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: 20, fontWeight: 600, color: "rgb(30, 58, 138)" }}
+          >
+            Wishlist
+          </Typography>
+          {wishlist.length === 0 ? (
+            <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
+              No items in the wishlist.
+            </Typography>
+          ) : (
+            wishlist.map((book) => (
+              <Box key={book.id} sx={{ mt: 2 }}>
+                <Typography id="wishlist-modal-description" sx={{ mt: 2 }}>
+                  <strong>{book.title}</strong> by {book.author}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleRemoveFromWishlist(book.id)}
+                  sx={{ mr: 1 }}
+                >
+                  Remove
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleAddToCart(book)}
+                >
+                  Add to Cart
+                </Button>
+              </Box>
+            ))
+          )}
+        </Box>
+      </Modal>
+
+      <Modal
+        open={emailModalOpen}
+        onClose={() => setEmailModalOpen(false)}
+        aria-labelledby="email-modal-title"
+        aria-describedby="email-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
+            p: 4,
+            background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+            borderColor: "#b1bacb",
+            borderRadius: "10px",
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={() => setEmailModalOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography id="email-modal-title" variant="h6" component="h2">
+            User Profile
+          </Typography>
+          <Typography id="email-modal-description" sx={{ mt: 2 }}>
+            Hello, here you can change your email.
+          </Typography>
+          <TextField
+            fullWidth
+            label="New Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{ mt: 2 }}
+          />
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleAddToCart(book)}
+            onClick={handleEmailChange}
+            sx={{ mt: 2 }}
           >
-            Add to Cart
+            Update Email
           </Button>
+          {successMessage && (
+            <Typography color="success.main" sx={{ mt: 2 }}>
+              {successMessage}
+            </Typography>
+          )}
+          {errorMessage && (
+            <Typography color="error.main" sx={{ mt: 2 }}>
+              {errorMessage}
+            </Typography>
+          )}
         </Box>
-      ))
-    )}
-  </Box>
-</Modal>
-      <Modal
-  open={cartOpen}
-  onClose={() => setCartOpen(false)}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box
-    sx={{
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      width: 400,
-      bgcolor: "background.paper",
-      boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
-      p: 4,
-      background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
-      borderColor: "#b1bacb",
-      borderRadius: "10px",
-    }}
-  >
-    <IconButton
-      aria-label="close"
-      onClick={() => setCartOpen(false)}
-      sx={{
-        position: "absolute",
-        right: 8,
-        top: 8,
-        color: (theme) => theme.palette.grey[500],
-      }}
-    >
-      <CloseIcon />
-    </IconButton>
-    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontSize: 20, fontWeight: 600, color: "rgb(30, 58, 138)" }}>
-      Shopping Cart
-    </Typography>
-    {cartItems.length === 0 ? (
-      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        No items in the cart.
-      </Typography>
-    ) : (
-      <>
-        {cartItems.map((item) => (
-          <Box key={item.id} sx={{ mt: 2 }}>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              <strong>{item.title}</strong> by {item.author}
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              Quantity: {item.quantity}
-            </Typography>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => handleRemoveFromCart(item.id)}
-            >
-              Remove
-            </Button>
-          </Box>
-        ))}
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          <strong>Total Amount:</strong> ${totalAmount.toFixed(2)}
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCheckout}
-          sx={{ mt: 2 }}
-        >
-          Checkout
-        </Button>
-      </>
-    )}
-  </Box>
-</Modal>
+      </Modal>
     </ThemeProvider>
   );
 }
