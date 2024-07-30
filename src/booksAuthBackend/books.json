@@ -1,1 +1,152 @@
-{"books":[{"id":1,"title":"Success Through a Positive Mental Attitude","author":"Napoleon Hill","publishYear":1959,"loggedDate":"2024-06-08","coverImage":"https://covers.storytel.com/jpg-640/9789389716580.2c5e4620-cbfc-4b43-b284-7d50393702d9?optimize=high&quality=70","description":"A guide to achieving success through a positive mindset.","price":9.99},{"id":2,"title":"The Law of Success","author":"Napoleon Hill","publishYear":1928,"loggedDate":"2024-06-08","coverImage":"https://covers.storytel.com/jpg-640/9789388118873.715cf7fd-1be9-446b-8fdc-f476796eb898?optimize=high","description":"A comprehensive guide to the principles of success.","price":14.99},{"id":3,"title":"Think and Grow Rich","author":"Napoleon Hill","publishYear":1937,"loggedDate":"2024-06-08","coverImage":"https://booksandyou.in/cdn/shop/files/ThinkandGrowrichNapoleonHill_1.jpg?v=1694072496","description":"A book on personal development and self-improvement.","price":10.99}],"users":[{"email":"grabielavrapi@gmail.com","password":"$2a$12$H6jcfdbzATLw5UqOdwlP.eNBbMHNbNWKXcuagC/hWG4HVxNfmQV9S","role":"admin","id":"cbfb01de-cfb8-427a-8a64-0dd851741869"},{"email":"test@gmail.com","password":"$2a$12$ZIGSdCYB0Unprk/zy7h85.wGAe.k5r6XC6jc6GxldP1Tid1/48gFO","role":"admin","id":"f9d6c9b9-6a9c-4b0a-941a-b003979bca60"},{"email":"test3@gmail.com","password":"$2a$12$wJJizzj51UH7VI5qq4TnZuBxVa10kpO3nYyCdnvRHremoeb82CmLa","role":"user","id":"ed6c42e3-db56-4ce2-a1a9-02164476f057"},{"email":"anisa@gmail.com","password":"$2a$12$tZ9ApzswPvwh52zuRLQRBeYfsi3Zuy.LE.2ZxXffREm8xvPlapzGu","role":"user","id":"19e77fc3-554b-43a6-97ec-3fac486e70db"},{"email":"gela@gmail.com","password":"$2a$12$jWzIYWsqVYfAEqmGoGmCsuftRIZr29C/GnCvPqMLqiuSshVTR5tSq","role":"admin","id":"80c5f9d6-41f2-45f5-8a73-022cf59401df"}]}
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "Success Through a Positive Mental Attitude",
+      "author": "Napoleon Hill",
+      "publishYear": 1959,
+      "loggedDate": "2024-06-08",
+      "coverImage": "https://covers.storytel.com/jpg-640/9789389716580.2c5e4620-cbfc-4b43-b284-7d50393702d9?optimize=high&quality=70",
+      "description": "A guide to achieving success through a positive mindset.",
+      "price": 9.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 2,
+      "title": "The Law of Success",
+      "author": "Napoleon Hill",
+      "publishYear": 1928,
+      "loggedDate": "2024-06-08",
+      "coverImage": "https://covers.storytel.com/jpg-640/9789388118873.715cf7fd-1be9-446b-8fdc-f476796eb898?optimize=high",
+      "description": "A comprehensive guide to the principles of success.",
+      "price": 14.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 3,
+      "title": "Think and Grow Rich",
+      "author": "Napoleon Hill",
+      "publishYear": 1937,
+      "loggedDate": "2024-06-08",
+      "coverImage": "https://booksandyou.in/cdn/shop/files/ThinkandGrowrichNapoleonHill_1.jpg?v=1694072496",
+      "description": "A book on personal development and self-improvement.",
+      "price": 10.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 4,
+      "title": "Outwitting the Devil",
+      "author": "Napoleon Hill",
+      "publishYear": 1938,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://www.naphill.org/wp-content/uploads/outwitting-the-devil.jpg",
+      "description": "A book revealing how to overcome the greatest obstacles to success.",
+      "price": 12.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 5,
+      "title": "The Master-Key to Riches",
+      "author": "Napoleon Hill",
+      "publishYear": 1945,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://m.media-amazon.com/images/I/71EKolUjrhL._AC_UF1000,1000_QL80_.jpg",
+      "description": "A guide to unlocking the secrets of wealth and happiness.",
+      "price": 11.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 6,
+      "title": "Grow Rich! With Peace of Mind",
+      "author": "Napoleon Hill",
+      "publishYear": 1967,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStXCXGVOpBjLtWCL2ih3TIT93VbTYOoAxmmw&s",
+      "description": "A book on achieving financial success while maintaining peace of mind.",
+      "price": 13.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 7,
+      "title": "You Can Work Your Own Miracles",
+      "author": "Napoleon Hill",
+      "publishYear": 1971,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://www.law-of-attraction-haven.com/images/work-your-own-miracles-cover.jpg",
+      "description": "A book on harnessing the power of your mind to achieve your goals.",
+      "price": 10.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 8,
+      "title": "Your Right to Be Rich",
+      "author": "Napoleon Hill",
+      "publishYear": 1954,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://m.media-amazon.com/images/I/61weL4McIvL._AC_UF894,1000_QL80_.jpg",
+      "description": "A collection of lectures on the principles of wealth and prosperity.",
+      "price": 15.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 9,
+      "title": "The Magic Ladder to Success",
+      "author": "Napoleon Hill",
+      "publishYear": 1930,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://m.media-amazon.com/images/I/61l7F2sj7-L._AC_UF1000,1000_QL80_.jpg",
+      "description": "A book on the steps to achieving success in any field.",
+      "price": 9.99,
+      "genre": "Self-help"
+    },
+    {
+      "id": 10,
+      "title": "Succeed and Grow Rich Through Persuasion",
+      "author": "Napoleon Hill",
+      "publishYear": 1970,
+      "loggedDate": "2024-07-30",
+      "coverImage": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1309286990i/805392.jpg",
+      "description": "A book on mastering the art of persuasion to achieve success.",
+      "price": 12.99,
+      "genre": "Self-help"
+    }
+  ],
+  "users": [
+    {
+      "email": "grabielavrapi@gmail.com",
+      "password": "$2a$12$H6jcfdbzATLw5UqOdwlP.eNBbMHNbNWKXcuagC/hWG4HVxNfmQV9S",
+      "role": "admin",
+      "id": "cbfb01de-cfb8-427a-8a64-0dd851741869"
+    },
+    {
+      "email": "test@gmail.com",
+      "password": "$2a$12$ZIGSdCYB0Unprk/zy7h85.wGAe.k5r6XC6jc6GxldP1Tid1/48gFO",
+      "role": "admin",
+      "id": "f9d6c9b9-6a9c-4b0a-941a-b003979bca60"
+    },
+    {
+      "email": "test3@gmail.com",
+      "password": "$2a$12$wJJizzj51UH7VI5qq4TnZuBxVa10kpO3nYyCdnvRHremoeb82CmLa",
+      "role": "user",
+      "id": "ed6c42e3-db56-4ce2-a1a9-02164476f057"
+    },
+    {
+      "email": "anisa@gmail.com",
+      "password": "$2a$12$tZ9ApzswPvwh52zuRLQRBeYfsi3Zuy.LE.2ZxXffREm8xvPlapzGu",
+      "role": "user",
+      "id": "19e77fc3-554b-43a6-97ec-3fac486e70db"
+    },
+    {
+      "email": "gela@gmail.com",
+      "password": "$2a$12$jWzIYWsqVYfAEqmGoGmCsuftRIZr29C/GnCvPqMLqiuSshVTR5tSq",
+      "role": "admin",
+      "id": "80c5f9d6-41f2-45f5-8a73-022cf59401df"
+    },
+    {
+      "email": "tela@gmail.com",
+      "password": "$2a$12$NN8ypz/3jB7mhayiQr9XiOcnrLmeGRNs2qCydV..9jRRIAZUiBocW",
+      "role": "admin",
+      "id": "844fd9d8-b38d-4718-acda-23f7d71302f1"
+    }
+  ]
+}

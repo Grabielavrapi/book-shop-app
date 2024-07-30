@@ -51,7 +51,7 @@ const Footer = () => {
         </div>
         </div>
       </div>
-      <p>&copy; 2024 Book Shop App | All Rights Reserved.</p>
+      <p>&copy; 2024 <b>Book Shop App</b> | All Rights Reserved.</p>
     </footer>
   );
 };

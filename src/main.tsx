@@ -95,7 +95,7 @@ import store from "./store/store";
 import Landing from "./pages/Landing";
 import NotFound from "./components/NotFound";
 import SignIn from "./components/SignIn";
-import Preloader from "./components/Preloader";  // Import Preloader component
+import Preloader from "./components/Preloader"; 
 import "./index.css";
 
 const isAuthenticated = () => {

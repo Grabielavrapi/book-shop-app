@@ -300,7 +300,7 @@ function ResponsiveAppBar({
                 </MenuItem>
                 {token && (
                   <MenuItem onClick={handleLogout}>
-                    <Typography textAlign="center">LogOut</Typography>
+                    <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
                 )}
               </Menu>
@@ -464,6 +464,75 @@ function ResponsiveAppBar({
               </Box>
             ))
           )}
+        </Box>
+      </Modal>
+
+      <Modal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        aria-labelledby="checkout-modal-title"
+        aria-describedby="checkout-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: "0 4px 20px 0 rgba(102, 49, 255, .15)",
+            p: 4,
+            background: "linear-gradient(180deg, #eff6ff 0.55%, #dce0fc 98%)",
+            borderColor: "#b1bacb",
+            borderRadius: "10px",
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={() => setCheckoutOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography id="checkout-modal-title" variant="h6" component="h2">
+            Checkout
+          </Typography>
+          <Typography id="checkout-modal-description" sx={{ mt: 2 }}>
+            Total Amount: ${totalAmount.toFixed(2)}
+          </Typography>
+          <TextField
+            fullWidth
+            label="Card Number"
+            type="number"
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            fullWidth
+            label="Expiry Date"
+            type="text"
+            placeholder="MM/YY"
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            fullWidth
+            label="CVV"
+            type="number"
+            sx={{ mt: 2 }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+            onClick={() => alert("Payment Successful!")}
+          >
+            Pay Now
+          </Button>
         </Box>
       </Modal>
 
