@@ -100,7 +100,8 @@ import "./index.css";
 
 const isAuthenticated = () => {
   // For now, always return true to bypass authentication
-  return true;
+  const token = localStorage.getItem('token');
+  return token;
 };
 
 const getUserRole = () => {
@@ -124,7 +125,7 @@ const router = createBrowserRouter([
   {
     path: "/landing",
     element: <Landing />, // Remove ProtectedRoute
-    loader,
+   loader: loader,
   },
   {
     path: "*",

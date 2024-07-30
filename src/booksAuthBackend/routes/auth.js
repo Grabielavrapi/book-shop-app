@@ -69,11 +69,13 @@ router.post("/login", async (req, res) => {
 
 // You have to provide the authentication token to the headers of the request and also the newEmail to the body.
 router.put('/update-email', async (req, res) => {
+  console.log("hereeeee")
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.status(401).json({ message: 'Authentication failed: No token provided' });
   }
 
+  
   const token = authHeader.split(' ')[1];
   let decodedToken;
   try {

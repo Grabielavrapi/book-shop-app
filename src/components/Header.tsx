@@ -118,8 +118,25 @@ function ResponsiveAppBar({
   };
 
   const handleEmailChange = async () => {
+
+   const token  = localStorage.getItem('token');
+
+   console.log("token", token);
     try {
-      const response = await axios.post("http://localhost:8080/update-email", { email });
+      const response= await fetch('http://localhost:8080/update-email',
+      {
+        method: 'PUT',  // Change this to PUT
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ newEmail: email }),  // Wrap your email in an object and stringify it
+       
+      });
+
+                // return redirect('/books');
+        
+      // const response = await axios.put("http://localhost:8080/update-email", { email } ,{headers:{'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}});
       if (response.status === 200) {
         setSuccessMessage("Email updated successfully!");
       }
